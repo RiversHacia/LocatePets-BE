@@ -1,4 +1,4 @@
-CREATE TABLE `slapjs`.`login` (
+CREATE TABLE `doggyfinder`.`login` (
   `create_ts` DATETIME NOT NULL,
   `email` VARCHAR(260) NULL,
   `id` BIGINT NOT NULL AUTO_INCREMENT,
