@@ -37,7 +37,7 @@ module.exports = function registrationHandler(req, res) {
       // user exists, get existing password to compare, create session
       const u = new Users();
       const safeEmail = xssFilters.inHTMLData(email);
-      u.getUserExistsByEmail(safeEmail).then((exists) => {
+      await u.getUserExistsByEmail(safeEmail).then((exists) => {
         if (exists) {
           res.status(200).json({ data: true, error: '' });
         } else {

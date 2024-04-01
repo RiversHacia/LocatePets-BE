@@ -2,6 +2,7 @@ const validator = require('email-validator');
 const xssFilters = require('xss-filters');
 const Login = require('../../data/models/login.model');
 const Users = require('../../data/models/users.model');
+const JwtModel = require('../../data/models/jwt.model');
 const { verifyPassword } = require('../../utils/password.functions');
 const { getUtcDateTime } = require('../../../shared/utils/date.functions');
 const { logger, invalidUseLogger } = require('../../logger');
@@ -54,9 +55,10 @@ module.exports = function loginHandler(req, res) {
         const token = generateJwtToken(session, '1h');
         const refreshToken = generateJwtToken(session, '30d');
 
-        req.session.userId = session;
-        req.session.email = email;
-        res.status(200).json({ data: {...session, token, refreshToken}, error: '' });
+        const jwtModel = new JwtModel();
+        await jwtModel.createRefreshToken(userId, refreshToken);
+
+        res.status(200).json({ data: { token, refreshToken}, error: '' });
 
       } catch (err) {
         logger.error(err);
