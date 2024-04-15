@@ -82,10 +82,21 @@ class Users {
     }
   }
 
+  async getUserEmailById(id) {
+    try {
+      const sql = `SELECT email FROM ${this.#login_table} WHERE id = ? limit 1`;
+      const results = await this.#db.query(sql, [id]);
+      return results[0].email || false;
+    } catch (err) {
+      logger.error(err);
+      throw err;
+    }
+  }
+
   async createUserInformation(data) {
     try {
-      const sql = `INSERT INTO ${this.#user_info} (user_id, first_name, last_name, profile_img, dob)`;
-      const values = `VALUES ('${data.id}', '${data.first_name}', '${data.last_name}', '${data.profile_img}', '${data.dob}')`;
+      const sql = `INSERT INTO ${this.#user_info} (user_id, name, profile_img, dob)`;
+      const values = `VALUES ('${data.id}', '${data.name}', '${data.profile_img}', ${data.dob})`;
       const results = await this.#db.query(sql + values);
       return results;
     } catch (err) {
@@ -96,10 +107,9 @@ class Users {
 
   async updateUserInformation(data) {
     try {
-      const sql = `UPDATE ${this.#user_info} SET first_name = ?, last_name = ?, profile_img = ?, dob = ? WHERE user_id = ?`;
+      const sql = `UPDATE ${this.#user_info} SET name = ?, profile_img = ?, dob = ? WHERE user_id = ?`;
       const results = await this.#db.query(sql, [
-        data.first_name,
-        data.last_name,
+        data.name,
         data.profile_img,
         data.dob,
         data.id,

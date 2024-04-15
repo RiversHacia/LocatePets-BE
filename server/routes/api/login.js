@@ -52,13 +52,13 @@ module.exports = function loginHandler(req, res) {
           create_ts: getUtcDateTime(),
         };
 
-        const token = generateJwtToken(session, '1h');
+        const accessToken = generateJwtToken(session, '1h');
         const refreshToken = generateJwtToken(session, '30d');
 
         const jwtModel = new JwtModel();
         await jwtModel.createRefreshToken(userId, refreshToken);
 
-        res.status(200).json({ data: { token, refreshToken}, error: '' });
+        res.status(200).json({ data: { userId, accessToken, refreshToken }, error: '' });
 
       } catch (err) {
         logger.error(err);

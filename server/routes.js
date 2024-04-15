@@ -1,6 +1,8 @@
 // const YAML = require('yamljs');
 const express = require('express');
 const path = require('path');
+const {upload} = require('./utils/upload.functions');
+
 const routes = require('./routes/index');
 // const swaggerUi = require('swagger-ui-express');
 
@@ -8,21 +10,7 @@ const router = express.Router();
 
 // const swaggerDocument = YAML.load(path.resolve(__dirname, './swagger.yaml'));
 
-// const isNotLoggedIn = (req, res, next) => {
-//   if (!req.session.userId) {
-//     res.redirect('/login');
-//   } else {
-//     next();
-//   }
-// };
-
-// const isLoggedIn = (req, res, next) => {
-//   if (req.session.userId) {
-//     res.redirect('/dashboard');
-//   } else {
-//     next();
-//   }
-// };
+// Check if uploads directory exists, if not, create it
 
 // swagger
 // router.use('/api-docs', swaggerUi.serve);
@@ -34,7 +22,9 @@ router.use('/api/logout', routes.logout);
 router.use('/api/register', routes.register);
 router.use('/api/fpw', routes.forgotpw);
 router.use('/api/fpwv', routes.forgotverify);
-router.use('/api/jwttokenrefresh', routes.jwttokenrefresh);
+router.use('/api/token-refresh', routes.jwttokenrefresh);
+router.post('/api/register-pet', upload.single('petImage'), routes.registerpet);
+router.use('/api/my-pets', routes.mypets);
 
 // frontend routes
 // Public routes

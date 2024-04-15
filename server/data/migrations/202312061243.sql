@@ -1,11 +1,11 @@
-CREATE TABLE `doggyfinder`.`user_information` (
+CREATE TABLE `user_information` (
   `user_id` BIGINT NOT NULL,
   `first_name` VARCHAR(255) NOT NULL,
   `last_name` VARCHAR(255) NOT NULL,
   `profile_img` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`user_id`));
 
-CREATE TABLE `doggyfinder`.`user_locations` (
+CREATE TABLE `user_locations` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `user_id` BIGINT NOT NULL,
   `geo_id` BIGINT NOT NULL,

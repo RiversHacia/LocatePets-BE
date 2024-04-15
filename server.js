@@ -38,7 +38,6 @@ app.engine('hbs', engine({
   partialsDir: path.join(__dirname, 'server/views/partials'),
 }));
 
-app.use(bodyParser.json());
 
 app.use(session({
   secret: process.env.SERVER_SESSION_SECRET,
@@ -51,10 +50,10 @@ app.use(session({
 app.set('views', path.join(__dirname, 'server/views'));
 app.set('view engine', '.hbs');
 
+
+app.use(bodyParser.json());
 app.use(compression());
 app.use(cors(corsOptionsDelegate));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 // Static files
 app.use('/img', express.static(`${__dirname}/shared/images`));
@@ -63,6 +62,7 @@ app.use('/css', express.static(`${__dirname}/node_modules/bootstrap-icons/font/f
 app.use('/css', express.static(`${__dirname}/node_modules/@fortawesome/fontawesome-free/css`));
 app.use('/css', express.static(`${__dirname}/shared/styles`));
 app.use('/dist', express.static(`${__dirname}/public/dist`));
+app.use('/pet/images', express.static(`${__dirname}/public/uploads`));
 app.use('/js', express.static(`${__dirname}/node_modules/bootstrap/dist/js`));
 app.use('/js', express.static(`${__dirname}/node_modules/@fortawesome/fontawesome-free/js`));
 

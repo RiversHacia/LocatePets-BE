@@ -45,7 +45,7 @@ class Database {
 
   handleQueryErr(err) {
     let sqlErr = { code: 'DB_ERROR' };
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.SERVER_ENV === 'development') {
       // suppresed in production enviroment
       sqlErr = {
         code: err.code,
@@ -58,6 +58,14 @@ class Database {
       logger.log(sqlErr);
     }
     return sqlErr;
+  }
+
+  debugQuery(sql, args) {
+    if (process.env.SERVER_ENV === 'development') {
+      // logger.log(`SQL: ${sql} ARGS: ${args}`);
+      return this.#connection.format(sql, args);
+    }
+    return null;
   }
 }
 

@@ -61,7 +61,7 @@ module.exports = function registrationHandler(req, res) {
       // register a new user
       if(!validateInputs(req, res)) { return; }
 
-      const { email, password, firstName, lastName, dobMonth, dobDay, dobYear } = req.body;
+      const { email, password, name } = req.body;
       const safeEmail = xssFilters.inHTMLData(email);
 
 
@@ -122,10 +122,9 @@ module.exports = function registrationHandler(req, res) {
 
         await user.createUserInformation({
           id: userId,
-          first_name: firstName,
-          last_name: lastName,
+          name: name,
           profile_img: '',
-          dob: `${dobYear}-${dobMonth}-${dobDay}`
+          dob: null
         }).catch((err) => {
           logger.error(err);
         });
@@ -148,98 +147,26 @@ module.exports = function registrationHandler(req, res) {
 };
 
 const validateInputs = (req, res) => {
-  const { email, password, firstName, lastName, dobMonth, dobDay, dobYear } = req.body;
+  const { email, password, name } = req.body;
   if (!email) {
     res.status(400).json({ data: [], error: 'EMAIL_EMPTY' });
     return false;
   }
 
-  if(!firstName) {
-    res.status(400).json({ data: [], error: 'FIRST_NAME_EMPTY' });
+  if(!name) {
+    res.status(400).json({ data: [], error: 'NAME_EMPTY' });
     return false;
   } else {
-    if(firstName.length > 50) {
-      res.status(400).json({ data: [], error: 'FIRST_NAME_TOO_LONG' });
+    if(name.length > 50) {
+      res.status(400).json({ data: [], error: 'NAME_TOO_LONG' });
       return false;
     }
-    if(firstName.length < 2) {
-      res.status(400).json({ data: [], error: 'FIRST_NAME_TOO_SHORT' });
+    if(name.length < 2) {
+      res.status(400).json({ data: [], error: 'NAME_TOO_SHORT' });
       return false;
     }
-    if(!/^[a-zA-Z]+$/.test(firstName)) {
-      res.status(400).json({ data: [], error: 'FIRST_NAME_INVALID' });
-      return false;
-    }
-  }
-
-  if(!lastName) {
-    res.status(400).json({ data: [], error: 'LAST_NAME_EMPTY' });
-    return false;
-  } else {
-    if(lastName.length > 50) {
-      res.status(400).json({ data: [], error: 'LAST_NAME_TOO_LONG' });
-      return false;
-    }
-    if(lastName.length < 2) {
-      res.status(400).json({ data: [], error: 'LAST_NAME_TO_SHORT' });
-      return false;
-    }
-    if(!/^[a-zA-Z]+$/.test(lastName)) {
-      res.status(400).json({ data: [], error: 'LAST_NAME_INVALID' });
-      return false;
-    }
-  }
-
-  if(!dobMonth) {
-    res.status(400).json({ data: [], error: 'DOB_MONTH_EMPTY' });
-    return false;
-  } else {
-    if(dobMonth.length > 2) {
-      res.status(400).json({ data: [], error: 'DOB_MONTH_TOO_LONG' });
-      return false;
-    }
-    if(dobMonth.length < 1) {
-      res.status(400).json({ data: [], error: 'DOB_MONTH_TOO_SHORT' });
-      return false;
-    }
-    if(!/^[0-9]+$/.test(dobMonth)) {
-      res.status(400).json({ data: [], error: 'DOB_MONTH_INVALID' });
-      return false;
-    }
-  }
-
-  if(!dobDay) {
-    res.status(400).json({ data: [], error: 'DOB_DAY_EMPTY' });
-    return false;
-  } else {
-    if(dobDay.length > 2) {
-      res.status(400).json({ data: [], error: 'DOB_DAY_TOO_LONG' });
-      return false;
-    }
-    if(dobDay.length < 1) {
-      res.status(400).json({ data: [], error: 'DOB_DAY_TOO_SHORT' });
-      return false;
-    }
-    if(!/^[0-9]+$/.test(dobDay)) {
-      res.status(400).json({ data: [], error: 'DOB_DAY_INVALID' });
-      return false;
-    }
-  }
-
-  if(!dobYear) {
-    res.status(400).json({ data: [], error: 'DOB_YEAR_EMPTY' });
-    return false;
-  } else {
-    if(dobYear.length > 4) {
-      res.status(400).json({ data: [], error: 'DOB_YEAR_TOO_LONG' });
-      return false;
-    }
-    if(dobYear.length < 4) {
-      res.status(400).json({ data: [], error: 'DOB_YEAR_TOO_SHORT' });
-      return false;
-    }
-    if(!/^[0-9]+$/.test(dobYear)) {
-      res.status(400).json({ data: [], error: 'DOB_YEAR_INVALID' });
+    if(!/^[a-zA-Z]+$/.test(name)) {
+      res.status(400).json({ data: [], error: 'NAME_INVALID' });
       return false;
     }
   }
