@@ -22,6 +22,7 @@ module.exports = function myPetsHandler(req, res) {
 
                 const petDetails = await pets.getMultiplePetsInfoAndImagesByPetIds(petIds);
 
+                pets.closeConnection();
                 res.status(200).json({ data: petDetails, error: '' });
             } catch (err) {
                 logger.error(err);

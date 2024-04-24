@@ -1,5 +1,5 @@
 const Database = require('../database');
-const {logger} = require('../../logger');
+const { logger } = require('../../logger');
 const { getUtcDateTime } = require('../../../shared/utils/date.functions');
 
 module.exports = class PetsModel {
@@ -13,7 +13,7 @@ module.exports = class PetsModel {
         this.#db = new Database();
     }
 
-   async registerPet(pet) {
+    async registerPet(pet) {
         try {
             const { ownerId, petType, petBreed, name, petDescription, petColor } = pet;
             const today = getUtcDateTime();
@@ -46,16 +46,17 @@ module.exports = class PetsModel {
     }
 
     async getPetsByOwnerId(ownerId) {
+        let output = [];
         try {
             const query = `SELECT petId FROM ${this.#ownerTable} WHERE petOwnerId = ?`;
             const values = [ownerId];
             const result = await this.#db.query(query, values);
 
-            if (result.length === 0) {
-                return [];
+            if (result.length > 0) {
+                output = result;
             }
 
-            return result;
+            return output;
         } catch (err) {
             logger.error(err);
             throw new Error('NO_PETS_FOUND');
@@ -106,7 +107,6 @@ module.exports = class PetsModel {
             if (result.length === 0) {
                 throw new Error('NO_PETS_FOUND');
             }
-
             return result;
         } catch (err) {
             logger.error(err);
@@ -319,4 +319,7 @@ module.exports = class PetsModel {
         }
     }
 
+    async closeConnection() {
+        await this.#db.close();
+    }
 };

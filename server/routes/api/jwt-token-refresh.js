@@ -39,6 +39,7 @@ module.exports = function jwtTokenRefreshHandler(req, res) {
 
                 if (token !== refreshToken) {
                     res.status(403).json({ data: [], error: 'INVALID_REFRESH_TOKEN', 'number': 3 });
+                    jwtModel.closeConnection();
                     return;
                 }
 
@@ -46,6 +47,7 @@ module.exports = function jwtTokenRefreshHandler(req, res) {
 
                 if (!email) {
                     res.status(403).json({ data: [], error: 'INVALID_REFRESH_TOKEN', 'number': 4 });
+                    jwtModel.closeConnection();
                     return;
                 }
 
@@ -59,12 +61,10 @@ module.exports = function jwtTokenRefreshHandler(req, res) {
                 const newRefreshToken = generateJwtToken(session, '30d');
 
                 await jwtModel.createRefreshToken(userId, refreshToken);
+                jwtModel.updateRefreshToken(jwtToken.userId, newRefreshToken);
+                jwtModel.closeConnection();
 
                 res.status(200).json({ data: { userId, accessToken, refreshToken: newRefreshToken }, error: '' });
-
-                jwtModel.updateRefreshToken(jwtToken.userId, newRefreshToken);
-
-                res.status(200).json({ data: [newRefreshToken], error: '' });
             } catch (err) {
                 logger.error(err);
                 res.status(500).json({ data: [], error: 'JWT_REFRESH_FAILED' });

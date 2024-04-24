@@ -1,5 +1,6 @@
 const restful = require('../../helpers/restful');
 const { logger, invalidUseLogger } = require('../../logger');
+const LostPetsModel = require('../../data/models/lost-pets.model');
 const PetsModel = require('../../data/models/pets.model');
 const {deleteUploadedFiles} = require('../../utils/upload.functions');
 
@@ -21,8 +22,8 @@ module.exports = function registerPetHandler(req, res) {
             try {
                 const uploadedFiles = [req.file.filename];
 
-                const pets = new PetsModel();
-                const result = await pets.registerPet(req.body);
+                const lostPets = new LostPetsModel();
+                const result = await lostPets.createLostPetEntry(req.body);
 
                 if (!result) {
                     deleteUploadedFiles(uploadedFiles);
@@ -30,8 +31,10 @@ module.exports = function registerPetHandler(req, res) {
                     throw new Error('REGISTER_PET_FAILED');
                 }
 
+                const pets = new PetsModel();
                 pets.setPetProfileImage(result.petId, uploadedFiles[0]);
                 pets.closeConnection();
+                lostPets.closeConnection();
                 res.status(200).json({ data: result, error: '' });
 
             } catch (err) {

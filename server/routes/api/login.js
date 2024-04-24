@@ -7,7 +7,6 @@ const { verifyPassword } = require('../../utils/password.functions');
 const { getUtcDateTime } = require('../../../shared/utils/date.functions');
 const { logger, invalidUseLogger } = require('../../logger');
 const dotenv = require('dotenv');
-const login = new Login();
 const restful = require('../../helpers/restful');
 const { generateJwtToken } = require('../../utils/jwt.functions');
 
@@ -23,6 +22,7 @@ module.exports = function loginHandler(req, res) {
       if(!validateInputs(req, res)) { return; }
 
       try {
+        const login = new Login();
         const { email, password } = req.body;
         const safeEmail = xssFilters.inHTMLData(email);
         const safePassword = xssFilters.inHTMLData(password);
@@ -38,11 +38,15 @@ module.exports = function loginHandler(req, res) {
 
         if (creds.length === 0) {
           res.status(400).json({ data: [], error: 'AUTHENTICATION_FAILED' });
+          login.closeConnection();
+          user.closeConnection();
           return;
         }
 
         if(!await verifyPassword(safePassword, creds[0].salt, creds[0].pass)) {
           res.status(400).json({ data: [], error: 'AUTHENTICATION_FAILED' });
+          login.closeConnection();
+          user.closeConnection();
           return;
         }
 
@@ -58,6 +62,9 @@ module.exports = function loginHandler(req, res) {
         const jwtModel = new JwtModel();
         await jwtModel.createRefreshToken(userId, refreshToken);
 
+        login.closeConnection();
+        user.closeConnection();
+        jwtModel.closeConnection();
         res.status(200).json({ data: { userId, accessToken, refreshToken }, error: '' });
 
       } catch (err) {

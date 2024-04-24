@@ -43,6 +43,10 @@ class JwtModel {
             throw err;
         }
     }
+
+    async closeConnection() {
+        await this.#db.close();
+    }
 }
 
 module.exports = JwtModel;
