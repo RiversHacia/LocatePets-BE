@@ -10,6 +10,7 @@ module.exports = class LostPetsModel {
     #ownerTable = 'pets_ownership';
     #lostPetsTable = 'lost_and_found';
     #userInfoTable = 'user_information';
+    #geoTable = 'geolocation';
 
     constructor() {
         this.#db = new Database();
@@ -197,10 +198,13 @@ module.exports = class LostPetsModel {
                 name,
                 petBreed,
                 petType,
-                lostOrFound,
+                isFound,
                 location,
+                locationDetails,
                 radius
             } = petData;
+
+            const ifIsFound = Number.isInteger(isFound) ? isFound : 0;
 
             const query = `insert into ${this.#petsTable}
                             (isActive, lastUpdated, createdDate, colors, details, name, isDeleted, petBreed, petType)
@@ -222,14 +226,15 @@ module.exports = class LostPetsModel {
                 throw new Error('PET_REGISTRATION_FAILED');
             }
 
-            const lostAndFoundQuery = `insert into ${this.#lostPetsTable} (createdDate, foundDate, updatedDate, isActive, isFound, petId, location, radius) values (?, ?, ?, 1, ?, ?, ?, ?)`;
-            const lostAndFoundValues = [today, today, today, lostOrFound, petId, location, radius];
+            const lostAndFoundQuery = `insert into ${this.#lostPetsTable} (createdDate, foundDate, updatedDate, isActive, isFound, petId, location, locationDetails, radius) values (?, ?, ?, 1, ?, ?, ?, ?, ?)`;
+            const lostAndFoundValues = [today, today, today, ifIsFound, petId, location, locationDetails, radius];
             const lostAndFoundResult = await this.#db.query(lostAndFoundQuery, lostAndFoundValues);
 
             if (lostAndFoundResult.affectedRows === 0) {
+                logger.error(this.#db.debugQuery(lostAndFoundQuery, lostAndFoundValues));
                 throw new Error('PET_REGISTRATION_FAILED');
             }
-
+            console.log('lostAndFoundResult', lostAndFoundResult);
             return { lafId: lostAndFoundResult.insertId, petId };
 
         } catch (err) {
@@ -244,14 +249,14 @@ module.exports = class LostPetsModel {
             const {
                 lafId,
                 petId,
-                lostOrFound,
+                isFound,
                 colors,
                 details,
                 name,
                 petBreed,
                 petType,
                 location,
-                locationDescription,
+                locationDetails,
                 radius
             } = petData;
 
@@ -263,8 +268,8 @@ module.exports = class LostPetsModel {
                 throw new Error('UPDATE_LOST_PET_ENTRY_FAILED');
             }
 
-            const lostAndFoundQuery = `update ${this.#lostPetsTable} set updatedDate = ?, isFound = ?, location = ?, locationDescription = ?, radius = ? where id = ? and isActive = 1`;
-            const lostAndFoundValues = [today, lostOrFound, location, locationDescription, radius, lafId];
+            const lostAndFoundQuery = `update ${this.#lostPetsTable} set updatedDate = ?, isFound = ?, location = ?, locationDetails = ?, radius = ? where id = ? and isActive = 1`;
+            const lostAndFoundValues = [today, isFound, location, locationDetails, radius, lafId];
             const lostAndFoundResult = await this.#db.query(lostAndFoundQuery, lostAndFoundValues);
 
             if (lostAndFoundResult.affectedRows === 0) {
@@ -294,6 +299,80 @@ module.exports = class LostPetsModel {
         } catch (err) {
             logger.error(err);
             throw new Error('DELETE_LOST_PET_ENTRY_FAILED');
+        }
+    }
+
+    async getLostPetsByOwnerId(ownerId) {
+        let output = [];
+        try {
+            const query = `
+                SELECT
+                    po.petId
+                FROM pets_ownership as po
+                JOIN lost_and_found as laf ON po.petId = laf.petId
+                WHERE po.petOwnerId = ?
+                    AND laf.isActive = 1
+                    AND laf.isDeleted = 0
+            `;
+
+            const values = [ownerId];
+            const result = await this.#db.query(query, values);
+
+            if (result.length > 0) {
+                output = result;
+            }
+
+            return output;
+        } catch (err) {
+            logger.error(err);
+            throw new Error('NO_PETS_FOUND');
+        }
+    }
+
+    async getMultipleLostPetsInfoAndImagesByPetIds(petIds) {
+        try {
+            const query = `SELECT
+                    p.id,
+                    laf.updatedDate,
+                    laf.createdDate,
+                    laf.foundDate,
+                    laf.isFound,
+                    laf.location,
+                    laf.locationDetails,
+                    laf.radius,
+                    p.colors,
+                    p.details,
+                    p.name,
+                    p.petBreed,
+                    p.petType,
+                    p.slugs,
+                    i.imgFileName,
+                    g.city,
+                    g.state_abbr,
+                    g.postal_code,
+                    g.latitude,
+                    g.longitude
+                FROM ${this.#petsTable} p
+                JOIN ${this.#petsImagesTable} i ON p.id = i.petId
+                JOIN ${this.#lostPetsTable} laf ON p.id = laf.petId
+                JOIN ${this.#geoTable} g ON laf.location = g.postal_code
+                WHERE
+                    p.isDeleted = 0
+                    AND p.isActive = 1
+                    AND laf.isDeleted = 0
+                    AND laf.isActive = 1
+                    AND p.id IN (?) AND i.isPrimary = 1 AND i.isDeleted = 0
+                    ORDER BY laf.createdDate DESC`;
+            const values = [petIds];
+            const result = await this.#db.query(query, values);
+
+            if (result.length === 0) {
+                throw new Error('NO_PETS_FOUND');
+            }
+            return result;
+        } catch (err) {
+            logger.error(err);
+            throw new Error('NO_PETS_FOUND');
         }
     }
 }

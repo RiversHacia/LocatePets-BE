@@ -25,6 +25,7 @@ router.use('/api/fpwv', routes.forgotverify);
 router.use('/api/token-refresh', routes.jwttokenrefresh);
 router.post('/api/register-pet', upload.single('petImage'), routes.registerpet);
 router.use('/api/my-pets', routes.mypets);
+router.use('/api/lost-pets', upload.single('petImage'),routes.lostpets);
 
 // frontend routes
 // Public routes

@@ -20,3 +20,10 @@ CREATE TABLE `lost_and_found` (
   `locationDescription` VARCHAR(1000) NULL,
   `radius` INT NOT NULL,
   PRIMARY KEY (`id`));
+
+ALTER TABLE `lost_and_found`
+CHANGE COLUMN `petId` `petId` BIGINT NOT NULL DEFAULT 0 ,
+CHANGE COLUMN `isActive` `isActive` TINYINT NOT NULL DEFAULT 0 ,
+CHANGE COLUMN `isDeleted` `isDeleted` TINYINT NOT NULL DEFAULT 0 ,
+CHANGE COLUMN `isFound` `isFound` TINYINT NOT NULL DEFAULT 0 ,
+CHANGE COLUMN `radius` `radius` INT NOT NULL DEFAULT 0 ;

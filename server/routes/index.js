@@ -6,6 +6,7 @@ const forgotverify = require('./api/forgot-pw-pt2');
 const jwttokenrefresh = require('./api/jwt-token-refresh');
 const registerpet = require('./api/register-pet');
 const mypets = require('./api/my-pets');
+const lostpets = require('./api/lost-pets');
 
 module.exports = {
     login,
@@ -16,4 +17,5 @@ module.exports = {
     jwttokenrefresh,
     mypets,
     registerpet,
+    lostpets
 };

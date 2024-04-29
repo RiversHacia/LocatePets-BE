@@ -7,8 +7,30 @@ const {deleteUploadedFiles} = require('../../utils/upload.functions');
 module.exports = function registerPetHandler(req, res) {
     restful(req, res, {
         async get() {
-            invalidUseLogger('registerPetHandler', 'GET', req);
-            res.status(405).json({ data: [], error: 'METHOD_NOT_SUPPORTED' });
+            try {
+                const { ownerId } = req.query;
+                if (!ownerId) {
+                    res.status(400).json({ data: [], error: 'OWNER_ID_EMPTY' });
+                    return;
+                }
+
+                const lostPets = new LostPetsModel();
+                const result = await lostPets.getLostPetsByOwnerId(ownerId);
+                if(result.length === 0){
+                    res.status(200).json({ data: [], error: 'NO_PETS_FOUND' });
+                    return;
+                }
+                const petIds = await result.map((pet) => pet.petId);
+
+                const pets = new PetsModel();
+                const petDetails = await lostPets.getMultipleLostPetsInfoAndImagesByPetIds(petIds);
+
+                pets.closeConnection();
+                res.status(200).json({ data: petDetails, error: '' });
+            } catch (err) {
+                logger.error(err);
+                res.status(500).json({ data: [], error: 'GET_PETS_FAILED' });
+            }
         },
         async put() {
             invalidUseLogger('registerPetHandler', 'PUT', req);
@@ -27,6 +49,8 @@ module.exports = function registerPetHandler(req, res) {
 
                 if (!result) {
                     deleteUploadedFiles(uploadedFiles);
+                    pets.closeConnection();
+                    lostPets.closeConnection();
                     res.status(500).json({ data: [], error: 'REGISTER_PET_FAILED' });
                     throw new Error('REGISTER_PET_FAILED');
                 }

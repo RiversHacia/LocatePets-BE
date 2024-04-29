@@ -48,7 +48,23 @@ module.exports = class PetsModel {
     async getPetsByOwnerId(ownerId) {
         let output = [];
         try {
-            const query = `SELECT petId FROM ${this.#ownerTable} WHERE petOwnerId = ?`;
+            //const query = `SELECT petId FROM ${this.#ownerTable} WHERE petOwnerId = ?`;
+
+            const query = `
+            SELECT
+                po.petId
+            FROM pets_ownership as po
+            JOIN pets as p on p.id = po.petId
+            WHERE po.petOwnerId = ?
+            AND p.isActive = 1
+            AND p.isDeleted = 0
+            AND po.petId NOT IN (
+                SELECT petId
+                FROM lost_and_found as laf
+                WHERE laf.isDeleted = 0
+                AND laf.isActive = 1
+            )`;
+
             const values = [ownerId];
             const result = await this.#db.query(query, values);
 
