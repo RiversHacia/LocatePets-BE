@@ -26,6 +26,8 @@ router.use('/api/token-refresh', routes.jwttokenrefresh);
 router.post('/api/register-pet', upload.single('petImage'), routes.registerpet);
 router.use('/api/my-pets', routes.mypets);
 router.use('/api/lost-pets', upload.single('petImage'),routes.lostpets);
+router.use('/api/missing-pets', routes.missingpets);
+router.use('/api/lost-pet-profile', routes.lostpetprofile);
 
 // frontend routes
 // Public routes

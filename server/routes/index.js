@@ -7,6 +7,8 @@ const jwttokenrefresh = require('./api/jwt-token-refresh');
 const registerpet = require('./api/register-pet');
 const mypets = require('./api/my-pets');
 const lostpets = require('./api/lost-pets');
+const missingpets = require('./api/missing-pets');
+const lostpetprofile = require('./api/lost-pet-profile');
 
 module.exports = {
     login,
@@ -17,5 +19,7 @@ module.exports = {
     jwttokenrefresh,
     mypets,
     registerpet,
-    lostpets
+    lostpets,
+    missingpets,
+    lostpetprofile,
 };

@@ -1,5 +1,5 @@
-const restful = require('../helpers/restful');
-const { logger, invalidUseLogger } = require('../logger');
+const restful = require('../../helpers/restful');
+const { logger, invalidUseLogger } = require('../../logger');
 
 module.exports = function exampleHandler(req, res) {
   restful(req, res, {

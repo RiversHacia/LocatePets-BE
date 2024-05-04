@@ -234,7 +234,6 @@ module.exports = class LostPetsModel {
                 logger.error(this.#db.debugQuery(lostAndFoundQuery, lostAndFoundValues));
                 throw new Error('PET_REGISTRATION_FAILED');
             }
-            console.log('lostAndFoundResult', lostAndFoundResult);
             return { lafId: lostAndFoundResult.insertId, petId };
 
         } catch (err) {
@@ -373,6 +372,120 @@ module.exports = class LostPetsModel {
         } catch (err) {
             logger.error(err);
             throw new Error('NO_PETS_FOUND');
+        }
+    }
+
+    async getLostPetsInfoAndImagesByPostalCode(postalCodes = [], lastId = 0, limit = 10,  orderBy = 'createdDate', order = 'DESC') {
+        try {
+            const query = `
+            SELECT
+                p.id as petId,
+                laf.id as lafId,
+                laf.updatedDate,
+                laf.createdDate,
+                laf.foundDate,
+                laf.isFound,
+                laf.location,
+                laf.locationDetails,
+                laf.radius,
+                p.colors,
+                p.details,
+                p.name,
+                p.petBreed,
+                p.petType,
+                p.slugs,
+                i.imgFileName,
+                g.city,
+                g.state_abbr,
+                g.postal_code,
+                g.latitude,
+                g.longitude
+            FROM pets p
+            JOIN pet_images i ON p.id = i.petId
+            JOIN lost_and_found laf ON p.id = laf.petId
+            RIGHT JOIN geolocation g ON laf.location = g.postal_code
+            WHERE
+                p.isDeleted = 0
+                AND p.isActive = 1
+                AND laf.isDeleted = 0
+                AND laf.isActive = 1
+                AND p.id IN (
+                    SELECT
+                        laf2.petId
+                    FROM lost_and_found laf2
+                    where
+                        laf2.id > ${lastId}
+                        AND isDeleted = 0
+                        AND isActive = 1
+                        AND location IN (
+                            ${postalCodes}
+                        )
+                )
+                AND i.isPrimary = 1 AND i.isDeleted = 0
+                ORDER BY laf.${orderBy} ${order} LIMIT ${limit};
+            `;
+
+            const values = [lastId, limit];
+            const result = await this.#db.query(query, values);
+
+            if (result.length === 0) {
+                return [];
+            }
+            return result;
+        } catch (err) {
+            logger.error(err);
+            throw new Error('NO_PETS_FOUND_QUERY_ERROR');
+        }
+    }
+
+    async getLostPetInfoAndImagesByProfileByLafId(lafId) {
+        try {
+            const query = `
+            SELECT
+                p.id as petId,
+                laf.id as lafId,
+                laf.updatedDate,
+                laf.createdDate,
+                laf.foundDate,
+                laf.isFound,
+                laf.location,
+                laf.locationDetails,
+                laf.radius,
+                p.colors,
+                p.details,
+                p.name,
+                p.petBreed,
+                p.petType,
+                p.slugs,
+                i.imgFileName,
+                g.city,
+                g.state_abbr,
+                g.postal_code,
+                g.latitude,
+                g.longitude
+            FROM pets p
+            JOIN pet_images i ON p.id = i.petId
+            JOIN lost_and_found laf ON p.id = laf.petId
+            RIGHT JOIN geolocation g ON laf.location = g.postal_code
+            WHERE
+                p.isDeleted = 0
+                AND p.isActive = 1
+                AND laf.isDeleted = 0
+                AND laf.isActive = 1
+                AND laf.id = ?
+                AND i.isPrimary = 1 AND i.isDeleted = 0
+            `;
+
+            const values = [lafId];
+            const result = await this.#db.query(query, values);
+
+            if (result.length === 0) {
+                return [];
+            }
+            return result;
+        } catch (err) {
+            logger.error(err);
+            throw new Error('NO_PETS_FOUND_QUERY_ERROR');
         }
     }
 }

@@ -57,15 +57,23 @@ class Database {
                 index: err.index,
                 sql: err.sql,
             };
-            logger.log(sqlErr);
+            logger.error(sqlErr);
         }
         return sqlErr;
     }
 
     debugQuery(sql, args) {
+        const query = this.#connection.format(sql, args);
         if (process.env.SERVER_ENV === 'development') {
-            // logger.log(`SQL: ${sql} ARGS: ${args}`);
-            return this.#connection.format(sql, args);
+            console.log('===== DEBUG QUERY MODE =====');
+            console.log('===== DEBUG QUERY MODE =====');
+            console.log('QUERY:', sql)
+            console.log('VALUES:', args);
+            console.log('-----------------------------');
+            console.log('FORMATTED QUERY:', query);
+            console.log('===== DEBUG QUERY MODE =====');
+            console.log('===== DEBUG QUERY MODE =====');
+            return query;
         }
         return null;
     }
