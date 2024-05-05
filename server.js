@@ -63,6 +63,7 @@ app.use('/css', express.static(`${__dirname}/node_modules/@fortawesome/fontaweso
 app.use('/css', express.static(`${__dirname}/shared/styles`));
 app.use('/dist', express.static(`${__dirname}/public/dist`));
 app.use('/pet/images', express.static(`${__dirname}/public/uploads`));
+app.use('/profile/images', express.static(`${__dirname}/public/uploads`));
 app.use('/js', express.static(`${__dirname}/node_modules/bootstrap/dist/js`));
 app.use('/js', express.static(`${__dirname}/node_modules/@fortawesome/fontawesome-free/js`));
 
