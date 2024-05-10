@@ -28,8 +28,10 @@ router.use('/api/my-pets', routes.mypets);
 router.use('/api/lost-pets', upload.single('petImage'),routes.lostpets);
 router.use('/api/missing-pets', routes.missingpets);
 router.use('/api/lost-pet-profile', routes.lostpetprofile);
+router.use('/api/pet-profile', routes.petprofile);
 router.use('/api/user-profile', routes.userprofile);
 router.use('/api/user-profile-img', upload.single('profile_img'), routes.userprofilepic);
+router.use('/api/messages', routes.messages);
 
 // frontend routes
 // Public routes

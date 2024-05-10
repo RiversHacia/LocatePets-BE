@@ -11,6 +11,8 @@ const register = require('./api/register');
 const registerpet = require('./api/register-pet');
 const userprofile = require('./api/user-profile');
 const userprofilepic = require('./api/user-profile-pic');
+const messages = require('./api/messages');
+const petprofile = require('./api/pet-profile');
 
 module.exports = {
     forgotpw,
@@ -21,9 +23,11 @@ module.exports = {
     lostpetprofile,
     lostpets,
     missingpets,
+    messages,
     mypets,
     register,
     registerpet,
     userprofile,
-    userprofilepic
+    userprofilepic,
+    petprofile
 };

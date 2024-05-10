@@ -8,7 +8,6 @@ module.exports = function missingPetsHandler(req, res) {
         async get() {
 
             try {
-                logger.info(req.query);
                 const {
                     x: userId = 0,
                     o: offset = 0,

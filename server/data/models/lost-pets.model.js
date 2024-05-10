@@ -307,8 +307,8 @@ module.exports = class LostPetsModel {
             const query = `
                 SELECT
                     po.petId
-                FROM pets_ownership as po
-                JOIN lost_and_found as laf ON po.petId = laf.petId
+                FROM ${this.#ownerTable} as po
+                JOIN ${this.#lostPetsTable} as laf ON po.petId = laf.petId
                 WHERE po.petOwnerId = ?
                     AND laf.isActive = 1
                     AND laf.isDeleted = 0
@@ -338,6 +338,7 @@ module.exports = class LostPetsModel {
                     laf.isFound,
                     laf.location,
                     laf.locationDetails,
+                    laf.id as lafId,
                     laf.radius,
                     p.colors,
                     p.details,
@@ -399,10 +400,13 @@ module.exports = class LostPetsModel {
                 g.state_abbr,
                 g.postal_code,
                 g.latitude,
-                g.longitude
+                g.longitude,
+                u.user_id as ownerId
             FROM pets p
             JOIN pet_images i ON p.id = i.petId
-            JOIN lost_and_found laf ON p.id = laf.petId
+            JOIN ${this.#lostPetsTable} laf ON p.id = laf.petId
+            JOIN ${this.#ownerTable} po ON laf.petId = po.petId
+            JOIN user_information u ON po.petOwnerId = u.user_id
             RIGHT JOIN geolocation g ON laf.location = g.postal_code
             WHERE
                 p.isDeleted = 0
@@ -486,6 +490,21 @@ module.exports = class LostPetsModel {
         } catch (err) {
             logger.error(err);
             throw new Error('NO_PETS_FOUND_QUERY_ERROR');
+        }
+    }
+
+    getLostPetOwnerIdByLafId(lafId) {
+        try {
+            const query = `
+                SELECT
+                    po.petOwnerId
+                FROM ${this.#ownerTable} po
+                JOIN ${this.#lostPetsTable} laf ON po.petId = laf.petId
+                WHERE laf.id = ?`;
+            return this.#db.query(query, [lafId]);
+        } catch (err) {
+            logger.error(err);
+            throw new Error('GET_LOST_PET_OWNER_ID_FAILED');
         }
     }
 }

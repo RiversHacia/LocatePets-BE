@@ -15,6 +15,10 @@ class Users {
         this.#db = new Database();
     }
 
+    async closeConnection() {
+        await this.#db.close();
+    }
+
     async getUserExistsByEmail(email) {
         try {
             const sql = `SELECT * FROM ${this.#login_table} WHERE email = ? limit 1`;
@@ -64,7 +68,7 @@ class Users {
             if (results.length > 0) {
                 return results[0];
             }
-            return false;
+            return [];
         } catch (err) {
             logger.error(err);
             throw err;
@@ -132,11 +136,6 @@ class Users {
             logger.error(err);
             throw err;
         }
-    }
-
-
-    async closeConnection() {
-        await this.#db.close();
     }
 }
 

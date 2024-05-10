@@ -1,6 +1,7 @@
 const restful = require('../../helpers/restful');
 const { logger, invalidUseLogger } = require('../../logger');
 const Users = require('../../data/models/users.model');
+const Messages = require('../../data/models/messages.model');
 
 module.exports = function userProfileHandler(req, res) {
     restful(req, res, {
@@ -14,16 +15,21 @@ module.exports = function userProfileHandler(req, res) {
                 }
 
                 const user = new Users();
+                const msgs = new Messages();
                 const userDetails = await user.getUserInformationById(userId);
+                const counts = await msgs.getCounts(userId);
 
                 if (!userDetails) {
                     user.closeConnection();
+                    msgs.closeConnection();
                     res.status(200).json({ data: [], error: 'NO_USER_FOUND' });
                     return;
                 }
 
+
                 user.closeConnection();
-                res.status(200).json({ data: userDetails, error: '' });
+                msgs.closeConnection();
+                res.status(200).json({ data: userDetails, msgs: counts, error: '' });
             } catch (err) {
                 logger.error(err);
                 res.status(500).json({ data: [], error: 'GET_PROFILE_FAILED' });
