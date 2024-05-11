@@ -1,6 +1,6 @@
 const bodyParser = require('body-parser');
 const compression = require('compression');
-const cors = require('cors');
+// const cors = require('cors');
 const dotenv = require('dotenv');
 const express = require('express');
 const { engine } = require('express-handlebars');
@@ -14,21 +14,21 @@ const app = express();
 const PORT = process.env.SERVER_PORT;
 
 // CORS whitelist
-const whitelist = process.env.SERVER_WHITELIST.split(',');
-const domainExistsOnWhitelist = (req) => whitelist.indexOf(req.header('Origin')) !== -1;
+// const whitelist = process.env.SERVER_WHITELIST.split(',');
+// const domainExistsOnWhitelist = (req) => whitelist.indexOf(req.header('Origin')) !== -1;
 
 // enable CORS
-const corsOptionsDelegate = (req, callback) => {
-  let corsOptions;
-  if (domainExistsOnWhitelist(req)) {
-    // Enable CORS for this request
-    corsOptions = { origin: true };
-  } else {
-    // Disable CORS for this request
-    corsOptions = { origin: false };
-  }
-  callback(null, corsOptions);
-};
+// const corsOptionsDelegate = (req, callback) => {
+//   let corsOptions;
+//   if (domainExistsOnWhitelist(req)) {
+//     // Enable CORS for this request
+//     corsOptions = { origin: true };
+//   } else {
+//     // Disable CORS for this request
+//     corsOptions = { origin: false };
+//   }
+//   callback(null, corsOptions);
+// };
 
 // Express configuration
 app.engine('hbs', engine({
@@ -53,7 +53,13 @@ app.set('view engine', '.hbs');
 
 app.use(bodyParser.json());
 app.use(compression());
-app.use(cors(corsOptionsDelegate));
+// app.use(cors(corsOptionsDelegate));
+
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 // Static files
 app.use('/img', express.static(`${__dirname}/shared/images`));
