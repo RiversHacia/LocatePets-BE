@@ -1,6 +1,6 @@
 const bodyParser = require('body-parser');
 const compression = require('compression');
-// const cors = require('cors');
+const cors = require('cors');
 const dotenv = require('dotenv');
 const express = require('express');
 const { engine } = require('express-handlebars');
@@ -53,7 +53,10 @@ app.set('view engine', '.hbs');
 
 app.use(bodyParser.json());
 app.use(compression());
-// app.use(cors(corsOptionsDelegate));
+//app.use(cors(corsOptionsDelegate));
+app.use(cors({
+    origin: '*'
+}));
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
