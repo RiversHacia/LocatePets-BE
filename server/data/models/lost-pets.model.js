@@ -209,7 +209,7 @@ module.exports = class LostPetsModel {
             const query = `insert into ${this.#petsTable}
                             (isActive, lastUpdated, createdDate, colors, details, name, isDeleted, petBreed, petType)
                         values
-                            (${ownerId}, '${today}', '${today}', '${petColor}', '${petDescription}', '${name}', 0, '${petBreed}', '${petType}')`;
+                            (1, '${today}', '${today}', '${petColor}', '${petDescription}', '${name}', 0, '${petBreed}', '${petType}')`;
 
             const result = await this.#db.query(query);
 
