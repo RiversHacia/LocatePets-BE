@@ -49,5 +49,5 @@ CHANGE COLUMN `colors` `colors` VARCHAR(500) NULL ,
 CHANGE COLUMN `desc` `details` VARCHAR(500) NULL DEFAULT NULL ,
 CHANGE COLUMN `isDeleted` `isDeleted` INT NOT NULL ;
 
-ALTER TABLE `doggyfinder`.`pet_images`
+ALTER TABLE `pet_images`
 CHANGE COLUMN `isDeleted` `isDeleted` INT NOT NULL DEFAULT 0 ;
