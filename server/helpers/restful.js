@@ -41,7 +41,7 @@
 
 // module.exports = restful;
 
-const restful = (req, res, handlers) => {
+const restful = async (req, res, handlers) => {
     const method = (req.method || '').toLowerCase();
     if (!(method in handlers)) {
         res.set('Allow', Object.keys(handlers).join(', ').toUpperCase());
