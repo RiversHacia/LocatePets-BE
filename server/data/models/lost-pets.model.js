@@ -231,7 +231,8 @@ module.exports = class LostPetsModel {
             const lostAndFoundResult = await this.#db.query(lostAndFoundQuery, lostAndFoundValues);
 
             if (lostAndFoundResult.affectedRows === 0) {
-                logger.error(this.#db.debugQuery(lostAndFoundQuery, lostAndFoundValues));
+                //logger.error(this.#db.debugQuery(lostAndFoundQuery, lostAndFoundValues));
+                logger.error('PET_REGISTRATION_FAILED');
                 throw new Error('PET_REGISTRATION_FAILED');
             }
             return { lafId: lostAndFoundResult.insertId, petId };

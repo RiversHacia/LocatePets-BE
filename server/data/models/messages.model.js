@@ -1,5 +1,6 @@
 const Database = require('../database');
 const { logger } = require('../../logger');
+const { v4: uuidv4 } = require('uuid');
 
 class Messages {
     #db;
@@ -23,6 +24,7 @@ class Messages {
             SELECT
                 m.id,
                 m.msgChainId,
+                m.msgId,
                 m.senderUserId,
                 m.recipientUserId,
                 m.isRead,
@@ -45,7 +47,7 @@ class Messages {
                 m.createdDate ${sort};
             `;
 
-            this.#db.debugQuery(sql);
+            // this.#db.debugQuery(sql);
 
             const results = await this.#db.query(sql);
             return results;
@@ -61,6 +63,7 @@ class Messages {
             SELECT
                 m.id,
                 m.msgChainId,
+                m.msgId,
                 m.senderUserId,
                 m.msgSubject,
                 m.msgBody,
@@ -92,6 +95,7 @@ class Messages {
             SELECT
                 m.id,
                 m.msgChainId,
+                m.msgId,
                 m.senderUserId,
                 m.msgSubject,
                 m.msgBody,
@@ -114,23 +118,80 @@ class Messages {
         }
     }
 
-    async createMessageEntry(senderUserId = 0, recipientUserId = 0, subject= '', message = '', chainId = '', metadata = {}) {
+    async deleteMessageByUserId(userId = 0, messageId = '') {
         try {
             const sql = `
-            INSERT INTO ${this.#messages}
-                (msgChainId, senderUserId, recipientUserId, isSystemMsg, isDeleted, isRead, msgSubject, msgBody, createdDate, metadata)
-            VALUES
-                (${chainId ? chainId : 'UUID()'}, ${senderUserId}, ${recipientUserId}, 0, 0, 0, '${subject}', '${message}', NOW(), '${metadata}');
-            `
-
+            UPDATE ${this.#messages} m
+            SET m.isDeleted = 1
+            WHERE
+                m.recipientUserId = ${userId}
+                or m.senderUserId = ${userId}
+                AND m.msgId = '${messageId}'
+            `;
             const results = await this.#db.query(sql);
-
-            return await this.getMsgChainUUIDByMessageId(results.insertId);
+            if(results.affectedRows === 0){
+                return false;
+            }
+            return true;
         } catch (err) {
             logger.error(err);
             throw err;
         }
     }
+
+    async createMessageEntry(senderUserId = 0, recipientUserId = 0, subject = '', message = '', chainId = '', metadata = {}) {
+        try {
+
+            const uuid1 = uuidv4();
+            const uuid2 = uuidv4();
+
+            const sql = `
+            INSERT INTO ${this.#messages}
+                (msgChainId, senderUserId, recipientUserId, isSystemMsg, isDeleted, isRead, msgSubject, msgBody, createdDate, metadata, msgId)
+            VALUES
+                (${chainId ? `'${chainId}'` : `'${uuid1}'`}, ${senderUserId}, ${recipientUserId}, 0, 0, 0, '${subject}', '${message}', NOW(), '${metadata}', '${uuid2}');
+            `
+
+            const results = await this.#db.query(sql);
+            const newMessageId = results.insertId;
+
+            const msgIds = await this.getMsgIdAndChainIdById(results.insertId);
+
+            if (Object.keys(msgIds).length > 0) {
+                console.log(msgIds)
+                await this.createMessageReplyEntry({ originalMessageId: msgIds.msgChainId, replyMessageId: msgIds.msgId });
+            }
+
+            return await this.getMsgChainUUIDByMessageId(newMessageId);
+        } catch (err) {
+            logger.error(err);
+            throw err;
+        }
+    }
+
+    async getMsgIdAndChainIdById(id = '') {
+        try {
+            const sql = `
+            SELECT
+                msgChainId,
+                msgId
+            FROM ${this.#messages}
+            WHERE
+                id = ${id}
+            `;
+            const results = await this.#db.query(sql);
+            if (results.length === 0) {
+                return [];
+            }
+
+            return results[0];
+        }
+        catch (err) {
+            logger.error(err);
+            throw err;
+        }
+    }
+
 
     async getMsgChainIdByUUID(msgUUID = '') {
         try {
@@ -170,12 +231,14 @@ class Messages {
 
     async createMessageReplyEntry(messageData = {}) {
         try {
+            console.log(messageData)
             const sql = `
             INSERT INTO ${this.#replies}
                 (originalMessageId, replyMessageId)
             VALUES
-                (${messageData.originalMessageId}, ${messageData.replyMessageId})
+                ('${messageData.originalMessageId}', '${messageData.replyMessageId}')
             `;
+            this.#db.debugQuery(sql);
             const results = await this.#db.query(sql);
             if(results.affectedRows === 0){
                 return 0;
@@ -192,7 +255,7 @@ class Messages {
             const sql = `
             UPDATE ${this.#messages}
             SET isDeleted = 1
-            WHERE id = ${messageId}
+            WHERE msgId = ${messageId}
             `;
             const results = await this.#db.query(sql);
             if(results.affectedRows === 0){
@@ -211,7 +274,7 @@ class Messages {
             const sql = `
             UPDATE ${this.#messages}
             SET isRead = 1
-            WHERE id = ${messageId}
+            WHERE msgId = ${messageId}
             `;
             const results = await this.#db.query(sql);
             if(results.affectedRows === 0){
