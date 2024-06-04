@@ -34,9 +34,7 @@ module.exports = function messageHandler(req, res) {
         async delete() {
             try {
                 const { userId, messageId } = req.params;
-                console.log('req.params', req.params);
-                console.log('userId', userId);
-                console.log('messageId', messageId);
+
                 if (!userId || !messageId) {
                     res.status(400).json({ data: [], error: 'MISSING_REQUIRED_FIELDS' });
                     return;
