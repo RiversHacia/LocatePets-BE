@@ -45,6 +45,23 @@ module.exports = class PetsModel {
         }
     }
 
+    async getPetsOwnerIdByPetId(petId) {
+        try {
+            const query = `SELECT petOwnerId FROM ${this.#ownerTable} WHERE petId = ?`;
+            const values = [petId];
+            const result = await this.#db.query(query, values);
+
+            if (result.length === 0) {
+                throw new Error('NO_OWNER_FOUND');
+            }
+
+            return result[0].petOwnerId;
+        } catch (err) {
+            logger.error(err);
+            throw new Error('NO_OWNER_FOUND');
+        }
+    }
+
     async getPetsByOwnerId(ownerId) {
         let output = [];
         try {
@@ -332,6 +349,23 @@ module.exports = class PetsModel {
         } catch (err) {
             logger.error(err);
             throw new Error('NO_PETS_FOUND');
+        }
+    }
+
+    async isPetsOwner(ownerId, petId) {
+        try {
+            const query = `SELECT * FROM ${this.#ownerTable} WHERE petOwnerId = ? AND petId = ?`;
+            const values = [ownerId, petId];
+            const result = await this.#db.query(query, values);
+
+            if (result.length === 0) {
+                return false;
+            }
+
+            return true;
+        } catch (err) {
+            logger.error(err);
+            throw new Error('NOT_PET_OWNER');
         }
     }
 

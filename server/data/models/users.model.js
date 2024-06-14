@@ -47,6 +47,34 @@ class Users {
         }
     }
 
+    async isUserById(id) {
+        try {
+            const sql = `SELECT * FROM ${this.#login_table} WHERE id = ? limit 1`;
+            const results = await this.#db.query(sql, [id]);
+            if (results.length > 0) {
+                return true;
+            }
+            return false;
+        } catch (err) {
+            logger.error(err);
+            throw err;
+        }
+    }
+
+    async isUserByEmail(email) {
+        try {
+            const sql = `SELECT * FROM ${this.#login_table} WHERE email = ? limit 1`;
+            const results = await this.#db.query(sql, [email]);
+            if (results.length > 0) {
+                return true;
+            }
+            return false;
+        } catch (err) {
+            logger.error(err);
+            throw err;
+        }
+    }
+
     async getUserInformationById(id) {
         try {
             const sql = `SELECT * FROM ${this.#user_info} WHERE user_id = ? limit 1`;

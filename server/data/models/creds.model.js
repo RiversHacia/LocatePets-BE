@@ -12,7 +12,19 @@ class Creds {
         this.#db = new Database();
     }
 
-    async updateUserCredentials(data) {
+    async updateUserCredentialsById(data) {
+        try {
+            const sql = `UPDATE ${this.#table_login} SET pass = ?, salt = ? WHERE id = ?`;
+            const values = [data.pass, data.salt, data.id];
+            const results = await this.#db.query(sql, values);
+            return results;
+        } catch (err) {
+            logger.error(err);
+            throw err;
+        }
+    }
+
+    async updateUserCredentialsByEmail(data) {
         try {
             const sql = `UPDATE ${this.#table_login} SET pass = ?, salt = ? WHERE email = ?`;
             const values = [data.pass, data.salt, data.email];
@@ -53,6 +65,21 @@ class Creds {
 
     async closeConnection() {
         await this.#db.close();
+    }
+
+    async getUserCredentialsById(id) {
+        try {
+            const sql = `SELECT pass, salt FROM ${this.#table_login} WHERE id = ?`;
+            const values = [id];
+            const results = await this.#db.query(sql, values);
+            if (results.length > 0) {
+                return results[0];
+            }
+            return false;
+        } catch (err) {
+            logger.error(err);
+            throw err;
+        }
     }
 }
 

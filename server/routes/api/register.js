@@ -10,6 +10,7 @@ const Creds = require('../../data/models/creds.model');
 const Users = require('../../data/models/users.model');
 const Login = require('../../data/models/login.model');
 const { logger, invalidUseLogger } = require('../../logger');
+const {validatePasswordRequirements} = require('../../utils/password.functions');
 
 dotenv.config();
 
@@ -217,7 +218,7 @@ const validateInputs = (req, res) => {
          * No character should repeat more than three times consecutively.
          */
         // eslint-disable-next-line no-useless-escape
-        if (!/^(?!.*(.)\1{3})(?=.*[a-z])(?=.*[A-Z])(?=.*[\d!@#$%^&*()_+{}\[\]:;"'<>,.?\/~`|-]).{12,}$/.test(password)) {
+        if (!validatePasswordRequirements(password)) {
             res.status(400).json({ data: [], error: 'PASSWORD_INVALID' });
             return false;
         }

@@ -487,14 +487,14 @@ module.exports = class LostPetsModel {
             if (result.length === 0) {
                 return [];
             }
-            return result;
+            return result[0];
         } catch (err) {
             logger.error(err);
             throw new Error('NO_PETS_FOUND_QUERY_ERROR');
         }
     }
 
-    getLostPetOwnerIdByLafId(lafId) {
+    async getLostPetOwnerIdByLafId(lafId) {
         try {
             const query = `
                 SELECT
@@ -502,10 +502,34 @@ module.exports = class LostPetsModel {
                 FROM ${this.#ownerTable} po
                 JOIN ${this.#lostPetsTable} laf ON po.petId = laf.petId
                 WHERE laf.id = ?`;
-            return this.#db.query(query, [lafId]);
+            const result = await this.#db.query(query, [lafId]);
+            return result.length > 0 ? result[0].petOwnerId : null;
+
         } catch (err) {
             logger.error(err);
             throw new Error('GET_LOST_PET_OWNER_ID_FAILED');
+        }
+    }
+
+    async isPetActiveInLostAndFound(petId) {
+        try {
+            const query = `SELECT id FROM ${this.#lostPetsTable} WHERE petId = ? AND isActive = 1 AND isDeleted = 0`;
+            const result = await this.#db.query(query, [petId]);
+            return result.length > 0;
+        } catch (err) {
+            logger.error(err);
+            throw new Error('IS_PET_ACTIVE_IN_LOST_AND_FOUND_FAILED');
+        }
+    }
+
+    async getLostPetIdByLafId(lafId) {
+        try {
+            const query = `SELECT petId FROM ${this.#lostPetsTable} WHERE id = ? AND isActive = 1 AND isDeleted = 0`;
+            const result = await this.#db.query(query, [lafId]);
+            return result.length > 0 ? result[0].petId : null;
+        } catch (err) {
+            logger.error(err);
+            throw new Error('GET_LOST_PET_ID_BY_LAF_ID_FAILED');
         }
     }
 }

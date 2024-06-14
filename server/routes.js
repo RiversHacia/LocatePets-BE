@@ -24,7 +24,7 @@ router.use('/api/fpw', routes.forgotpw);
 router.use('/api/fpwv', routes.forgotverify);
 router.use('/api/token-refresh', routes.jwttokenrefresh);
 router.post('/api/register-pet', upload.single('petImage'), routes.registerpet);
-router.use('/api/my-pets', routes.mypets);
+router.use('/api/my-pets/:ownerId?/:petId?', routes.mypets);
 router.use('/api/lost-pets', upload.single('petImage'),routes.lostpets);
 router.use('/api/missing-pets', routes.missingpets);
 router.use('/api/lost-pet-profile', routes.lostpetprofile);
@@ -32,6 +32,7 @@ router.use('/api/pet-profile', routes.petprofile);
 router.use('/api/user-profile', routes.userprofile);
 router.use('/api/user-profile-img', upload.single('profile_img'), routes.userprofilepic);
 router.use('/api/messages/:messageId?/:userId?', routes.messages);
+router.use('/api/user-pass', routes.userpass);
 
 // frontend routes
 // Public routes
