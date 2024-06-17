@@ -33,6 +33,8 @@ router.use('/api/user-profile', routes.userprofile);
 router.use('/api/user-profile-img', upload.single('profile_img'), routes.userprofilepic);
 router.use('/api/messages/:messageId?/:userId?', routes.messages);
 router.use('/api/user-pass', routes.userpass);
+router.use('/api/me/:userId', routes.me);
+router.use('/api/me/:userId/msg-count', routes.me);
 
 // frontend routes
 // Public routes

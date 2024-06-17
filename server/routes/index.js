@@ -5,15 +5,16 @@ const login = require('./api/login');
 const logout = require('./api/logout');
 const lostpetprofile = require('./api/lost-pet-profile');
 const lostpets = require('./api/lost-pets');
+const me = require('./api/me');
+const messages = require('./api/messages');
 const missingpets = require('./api/missing-pets');
 const mypets = require('./api/my-pets');
+const petprofile = require('./api/pet-profile');
 const register = require('./api/register');
 const registerpet = require('./api/register-pet');
+const userpass = require('./api/user-pass');
 const userprofile = require('./api/user-profile');
 const userprofilepic = require('./api/user-profile-pic');
-const messages = require('./api/messages');
-const petprofile = require('./api/pet-profile');
-const userpass = require('./api/user-pass');
 
 module.exports = {
     forgotpw,
@@ -23,13 +24,14 @@ module.exports = {
     logout,
     lostpetprofile,
     lostpets,
-    missingpets,
+    me,
     messages,
+    missingpets,
     mypets,
+    petprofile,
     register,
     registerpet,
+    userpass,
     userprofile,
-    userprofilepic,
-    petprofile,
-    userpass
+    userprofilepic
 };
