@@ -6,6 +6,7 @@ const logout = require('./api/logout');
 const lostpetprofile = require('./api/lost-pet-profile');
 const lostpets = require('./api/lost-pets');
 const me = require('./api/me');
+const message = require('./api/message');
 const messages = require('./api/messages');
 const missingpets = require('./api/missing-pets');
 const mypets = require('./api/my-pets');
@@ -25,6 +26,7 @@ module.exports = {
     lostpetprofile,
     lostpets,
     me,
+    message,
     messages,
     missingpets,
     mypets,

@@ -17,24 +17,25 @@ const router = express.Router();
 // router.get('/api-docs', swaggerUi.setup(swaggerDocument));
 
 // api routes
-router.use('/api/login', routes.login);
-router.use('/api/logout', routes.logout);
-router.use('/api/register', routes.register);
+router.post('/api/register-pet', upload.single('petImage'), routes.registerpet);
 router.use('/api/fpw', routes.forgotpw);
 router.use('/api/fpwv', routes.forgotverify);
-router.use('/api/token-refresh', routes.jwttokenrefresh);
-router.post('/api/register-pet', upload.single('petImage'), routes.registerpet);
-router.use('/api/my-pets/:ownerId?/:petId?', routes.mypets);
-router.use('/api/lost-pets', upload.single('petImage'),routes.lostpets);
-router.use('/api/missing-pets', routes.missingpets);
+router.use('/api/login', routes.login);
+router.use('/api/logout', routes.logout);
 router.use('/api/lost-pet-profile', routes.lostpetprofile);
-router.use('/api/pet-profile', routes.petprofile);
-router.use('/api/user-profile', routes.userprofile);
-router.use('/api/user-profile-img', upload.single('profile_img'), routes.userprofilepic);
-router.use('/api/messages/:messageId?/:userId?', routes.messages);
-router.use('/api/user-pass', routes.userpass);
+router.use('/api/lost-pets', upload.single('petImage'),routes.lostpets);
 router.use('/api/me/:userId', routes.me);
 router.use('/api/me/:userId/msg-count', routes.me);
+router.use('/api/message/:messageId/action', routes.message);
+router.use('/api/messages/:messageId?/:userId?', routes.messages);
+router.use('/api/missing-pets', routes.missingpets);
+router.use('/api/my-pets/:ownerId?/:petId?', routes.mypets);
+router.use('/api/pet-profile', routes.petprofile);
+router.use('/api/register', routes.register);
+router.use('/api/token-refresh', routes.jwttokenrefresh);
+router.use('/api/user-pass', routes.userpass);
+router.use('/api/user-profile', routes.userprofile);
+router.use('/api/user-profile-img', upload.single('profile_img'), routes.userprofilepic);
 
 // frontend routes
 // Public routes
