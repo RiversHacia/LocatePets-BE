@@ -185,7 +185,7 @@ const validateInputs = (req, res) => {
             res.status(400).json({ data: [], error: 'NAME_TOO_SHORT' });
             return false;
         }
-        if (!/^[a-zA-Z]+$/.test(name)) {
+        if (!/^[a-zA-Z\s'-]+$/.test(name)) {
             res.status(400).json({ data: [], error: 'NAME_INVALID' });
             return false;
         }

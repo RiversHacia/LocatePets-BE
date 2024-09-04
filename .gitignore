@@ -6,3 +6,4 @@ error.log
 public/dist/
 .vscode/
 uploads/
+.DS_Store

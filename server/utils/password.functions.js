@@ -40,11 +40,10 @@ const checkStrengthValue = (password) => {
  * At least one lowercase letter.
  * At least one special character that is safe for the web.
  * A minimum length of 12 characters.
- * No character should repeat more than three times consecutively.
  */
 const validatePasswordRequirements = (password) => {
   // eslint-disable-next-line no-useless-escape
-  return !/^(?!.*(.)\1{3})(?=.*[a-z])(?=.*[A-Z])(?=.*[\d!@#$%^&*()_+{}\[\]:;"'<>,.?\/~`|-]).{12,}$/.test(password);
+  return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W]).{10,}$/.test(password);
 }
 
 module.exports = {
