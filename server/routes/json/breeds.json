@@ -1,0 +1,324 @@
+{
+    "cats": [
+        {
+            "name": "Mixed Breed",
+            "origin": "Worldwide",
+            "life_span": "12-20 years",
+            "temperament": ["Varies"]
+        },
+        {
+            "name": "Domestic Shorthair",
+            "origin": "Worldwide",
+            "life_span": "12-14 years",
+            "temperament": ["Affectionate", "Playful", "Intelligent"]
+        },
+        {
+            "name": "Persian",
+            "origin": "Iran",
+            "life_span": "12-17 years",
+            "temperament": ["Gentle", "Calm", "Loving"]
+        },
+        {
+            "name": "Maine Coon",
+            "origin": "United States",
+            "life_span": "12-15 years",
+            "temperament": ["Friendly", "Affectionate", "Playful", "Intelligent"]
+        },
+        {
+            "name": "Ragdoll",
+            "origin": "United States",
+            "life_span": "12-17 years",
+            "temperament": ["Affectionate", "Gentle", "Calm"]
+        },
+        {
+            "name": "Bengal",
+            "origin": "United States",
+            "life_span": "12-16 years",
+            "temperament": ["Energetic", "Playful", "Intelligent"]
+        },
+        {
+            "name": "Abyssinian",
+            "origin": "Ethiopia",
+            "life_span": "9-15 years",
+            "temperament": ["Active", "Energetic", "Playful", "Intelligent"]
+        },
+        {
+            "name": "British Shorthair",
+            "origin": "United Kingdom",
+            "life_span": "12-20 years",
+            "temperament": ["Calm", "Easygoing", "Affectionate"]
+        },
+        {
+            "name": "American Shorthair",
+            "origin": "United States",
+            "life_span": "15-20 years",
+            "temperament": ["Friendly", "Affectionate", "Playful", "Calm"]
+        },
+        {
+            "name": "Scottish Fold",
+            "origin": "Scotland",
+            "life_span": "11-15 years",
+            "temperament": ["Loving", "Gentle", "Intelligent", "Calm"]
+        },
+        {
+            "name": "Sphynx",
+            "origin": "Canada",
+            "life_span": "13-15 years",
+            "temperament": ["Energetic", "Sociable", "Affectionate", "Loyal"]
+        },
+        {
+            "name": "Himalayan",
+            "origin": "United States",
+            "life_span": "9-15 years",
+            "temperament": ["Sweet-tempered", "Calm", "Sociable"]
+        },
+        {
+            "name": "Norwegian Forest Cat",
+            "origin": "Norway",
+            "life_span": "14-16 years",
+            "temperament": ["Friendly", "Intelligent", "Playful", "Adaptable"]
+        },
+        {
+            "name": "Oriental Shorthair",
+            "origin": "United States",
+            "life_span": "10-15 years",
+            "temperament": ["Intelligent", "Social", "Loyal", "Energetic"]
+        },
+        {
+            "name": "Russian Blue",
+            "origin": "Russia",
+            "life_span": "15-20 years",
+            "temperament": ["Quiet", "Intelligent", "Loyal", "Affectionate"]
+        },
+        {
+            "name": "Savannah",
+            "origin": "United States",
+            "life_span": "12-20 years",
+            "temperament": ["Curious", "Intelligent", "Loyal"]
+        },
+        {
+            "name": "Siamese",
+            "origin": "Thailand",
+            "life_span": "12-15 years",
+            "temperament": ["Affectionate", "Sociable", "Intelligent", "Playful"]
+        },
+        {
+            "name": "Turkish Angora",
+            "origin": "Turkey",
+            "life_span": "12-18 years",
+            "temperament": ["Affectionate", "Intelligent", "Playful", "Energetic"]
+        }
+    ],
+    "dogs": [
+    {
+        "name": "Mixed Breed",
+        "origin": "Worldwide",
+        "life_span": "12-20 years",
+        "temperament": ["Varies"]
+    },
+    {
+      "name": "Labrador Retriever",
+      "origin": "Canada",
+      "life_span": "10-12 years",
+      "temperament": ["Outgoing", "Even Tempered", "Gentle", "Agile", "Intelligent", "Trusting"]
+    },
+    {
+      "name": "German Shepherd",
+      "origin": "Germany",
+      "life_span": "9-13 years",
+      "temperament": ["Confident", "Courageous", "Intelligent", "Loyal"]
+    },
+    {
+      "name": "Golden Retriever",
+      "origin": "Scotland",
+      "life_span": "10-12 years",
+      "temperament": ["Intelligent", "Friendly", "Reliable", "Trustworthy", "Confident"]
+    },
+    {
+      "name": "Bulldog",
+      "origin": "England",
+      "life_span": "8-10 years",
+      "temperament": ["Docile", "Willful", "Friendly"]
+    },
+    {
+      "name": "Beagle",
+      "origin": "England",
+      "life_span": "12-15 years",
+      "temperament": ["Even Tempered", "Gentle", "Amiable", "Determined", "Excitable"]
+    },
+    {
+      "name": "Poodle",
+      "origin": "Germany, France",
+      "life_span": "12-15 years",
+      "temperament": ["Intelligent", "Active", "Alert", "Faithful", "Trainable"]
+    },
+    {
+      "name": "Siberian Husky",
+      "origin": "Siberia",
+      "life_span": "12-14 years",
+      "temperament": ["Outgoing", "Independent", "Intelligent", "Gentle"]
+    },
+    {
+      "name": "Rottweiler",
+      "origin": "Germany",
+      "life_span": "8-10 years",
+      "temperament": ["Good-natured", "Devoted", "Obedient", "Fearless", "Confident"]
+    },
+    {
+      "name": "Dachshund",
+      "origin": "Germany",
+      "life_span": "12-16 years",
+      "temperament": ["Playful", "Curious", "Brave"]
+    },
+    {
+      "name": "Boxer",
+      "origin": "Germany",
+      "life_span": "10-12 years",
+      "temperament": ["Fun-loving", "Energetic", "Loyal", "Friendly"]
+    },
+    {
+      "name": "French Bulldog",
+      "origin": "England, France",
+      "life_span": "10-12 years",
+      "temperament": ["Adaptable", "Playful", "Smart"]
+    },
+    {
+      "name": "Yorkshire Terrier",
+      "origin": "England",
+      "life_span": "13-16 years",
+      "temperament": ["Bold", "Independent", "Confident", "Intelligent"]
+    },
+    {
+      "name": "Pomeranian",
+      "origin": "Germany, Poland",
+      "life_span": "12-16 years",
+      "temperament": ["Playful", "Friendly", "Extroverted"]
+    },
+    {
+      "name": "Shih Tzu",
+      "origin": "Tibet",
+      "life_span": "10-16 years",
+      "temperament": ["Affectionate", "Happy", "Outgoing"]
+    },
+    {
+      "name": "Boston Terrier",
+      "origin": "United States",
+      "life_span": "11-13 years",
+      "temperament": ["Friendly", "Bright", "Amusing"]
+    },
+    {
+      "name": "Australian Shepherd",
+      "origin": "United States",
+      "life_span": "13-15 years",
+      "temperament": ["Smart", "Work-oriented", "Exuberant"]
+    },
+    {
+      "name": "Cocker Spaniel",
+      "origin": "Spain",
+      "life_span": "12-15 years",
+      "temperament": ["Gentle", "Smart", "Happy"]
+    },
+    {
+      "name": "Cavalier King Charles Spaniel",
+      "origin": "United Kingdom",
+      "life_span": "9-14 years",
+      "temperament": ["Affectionate", "Gentle", "Graceful", "Courageous"]
+    },
+    {
+        "name": "Chihuahua",
+        "origin": "Mexico",
+        "life_span": "12-20 years",
+        "temperament": ["Lively", "Devoted", "Alert", "Quick", "Courageous"]
+      },
+      {
+        "name": "Border Collie",
+        "origin": "United Kingdom",
+        "life_span": "10-17 years",
+        "temperament": ["Intelligent", "Energetic", "Responsive", "Alert", "Agile"]
+      },
+      {
+        "name": "Shetland Sheepdog",
+        "origin": "Scotland",
+        "life_span": "12-14 years",
+        "temperament": ["Playful", "Energetic", "Intelligent", "Trainable", "Loyal"]
+      },
+      {
+        "name": "Doberman Pinscher",
+        "origin": "Germany",
+        "life_span": "10-13 years",
+        "temperament": ["Energetic", "Alert", "Loyal", "Fearless", "Intelligent"]
+      },
+      {
+        "name": "Great Dane",
+        "origin": "Germany",
+        "life_span": "7-10 years",
+        "temperament": ["Friendly", "Dependable", "Gentle", "Confident", "Loving"]
+      },
+      {
+        "name": "Bernese Mountain Dog",
+        "origin": "Switzerland",
+        "life_span": "7-10 years",
+        "temperament": ["Affectionate", "Loyal", "Intelligent", "Faithful"]
+      },
+      {
+        "name": "Cane Corso",
+        "origin": "Italy",
+        "life_span": "9-12 years",
+        "temperament": ["Trainable", "Reserved", "Stable", "Quiet", "Protective"]
+      },
+      {
+        "name": "Rhodesian Ridgeback",
+        "origin": "Zimbabwe",
+        "life_span": "10-12 years",
+        "temperament": ["Loyal", "Independent", "Intelligent", "Dignified", "Sensitive"]
+      },
+      {
+        "name": "Mastiff",
+        "origin": "England",
+        "life_span": "6-12 years",
+        "temperament": ["Good-natured", "Affectionate", "Dignified", "Protective", "Calm"]
+      },
+      {
+        "name": "Basset Hound",
+        "origin": "France",
+        "life_span": "10-12 years",
+        "temperament": ["Tenacious", "Friendly", "Affectionate", "Devoted", "Sweet-Tempered"]
+      },
+      {
+        "name": "Akita",
+        "origin": "Japan",
+        "life_span": "10-15 years",
+        "temperament": ["Loyal", "Courageous", "Dignified", "Affectionate", "Alert"]
+      },
+      {
+        "name": "Alaskan Malamute",
+        "origin": "United States",
+        "life_span": "10-14 years",
+        "temperament": ["Affectionate", "Loyal", "Playful", "Friendly", "Dignified"]
+      },
+      {
+        "name": "Brittany",
+        "origin": "France",
+        "life_span": "12-14 years",
+        "temperament": ["Bright", "Eager", "Adaptable", "Agile", "Friendly"]
+      },
+      {
+        "name": "English Springer Spaniel",
+        "origin": "England",
+        "life_span": "12-14 years",
+        "temperament": ["Friendly", "Playful", "Obedient", "Pliable", "Courageous"]
+      },
+      {
+        "name": "West Highland White Terrier",
+        "origin": "Scotland",
+        "life_span": "12-16 years",
+        "temperament": ["Hardy", "Independent", "Courageous", "Friendly", "Alert"]
+      },
+      {
+        "name": "Pug",
+        "origin": "China",
+        "life_span": "12-15 years",
+        "temperament": ["Charming", "Mischievous", "Loving", "Affectionate", "Clever"]
+      }
+    ]
+  }

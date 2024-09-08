@@ -36,6 +36,7 @@ router.use('/api/token-refresh', routes.jwttokenrefresh);
 router.use('/api/user-pass', routes.userpass);
 router.use('/api/user-profile', routes.userprofile);
 router.use('/api/user-profile-img', upload.single('profile_img'), routes.userprofilepic);
+router.use('/api/pet-types', routes.pettypes);
 
 // frontend routes
 // Public routes

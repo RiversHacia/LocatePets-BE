@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "84Q387792U.com.locatepets",
+        "paths": [ "/login", "/signup", "/reset-password" ]
+      }
+    ]
+  }
+}

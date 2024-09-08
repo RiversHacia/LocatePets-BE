@@ -16,6 +16,7 @@ const registerpet = require('./api/register-pet');
 const userpass = require('./api/user-pass');
 const userprofile = require('./api/user-profile');
 const userprofilepic = require('./api/user-profile-pic');
+const pettypes = require('./api/pet-types');
 
 module.exports = {
     forgotpw,
@@ -31,6 +32,7 @@ module.exports = {
     missingpets,
     mypets,
     petprofile,
+    pettypes,
     register,
     registerpet,
     userpass,
