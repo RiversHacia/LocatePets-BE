@@ -14,6 +14,7 @@ const storage = multer.diskStorage({
         cb(null, uploadsDir); // Make sure this folder exists
     },
     filename: function(req, file, cb) {
+        console.log(file);
         const fileExtension = file.originalname.split('.').pop();
         const newFilename = uuidv4() + '-' + Date.now() + '.' + fileExtension;  // Ensures a unique filename
         cb(null, newFilename);

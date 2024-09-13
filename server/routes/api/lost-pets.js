@@ -41,6 +41,7 @@ module.exports = function registerPetHandler(req, res) {
             res.status(405).json({ data: [], error: 'METHOD_NOT_SUPPORTED' });
         },
         async post() {
+            console.log(req)
             try {
                 const uploadedFiles = [req.file.filename];
 
@@ -48,6 +49,7 @@ module.exports = function registerPetHandler(req, res) {
                 const result = await lostPets.createLostPetEntry(req.body);
 
                 if (!result) {
+                    console.log('result', result);
                     deleteUploadedFiles(uploadedFiles);
                     pets.closeConnection();
                     lostPets.closeConnection();
@@ -60,7 +62,7 @@ module.exports = function registerPetHandler(req, res) {
                 pets.closeConnection();
                 lostPets.closeConnection();
                 res.status(200).json({ data: result, error: '' });
-
+                console.log('done');
             } catch (err) {
                 logger.error(err);
                 deleteUploadedFiles([req.file.filename]);
