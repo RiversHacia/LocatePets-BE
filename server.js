@@ -7,6 +7,7 @@ const { engine } = require('express-handlebars');
 const session = require('express-session');
 const path = require('path');
 const routes = require('./server/routes');
+const {logger} = require('./server/logger');
 
 dotenv.config();
 const app = express();
@@ -84,6 +85,6 @@ app.use(routes);
 app.listen(PORT, () => {
   if (process.env.SERVER_ENV !== 'production') {
     // eslint-disable-next-line no-console
-    console.log(`Server running in ${PORT} mode`);
+    logger.info(`Server running in ${PORT} mode`);
   }
 });
