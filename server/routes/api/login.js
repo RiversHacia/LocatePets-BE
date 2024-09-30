@@ -29,7 +29,7 @@ module.exports = function loginHandler(req, res) {
 
         const user = new Users();
         if(!await user.getUserExistsByEmail(safeEmail)) {
-          res.status(400).json({ data: [], error: 'AUTHENTICATION_FAILED' });
+          res.status(400).json({ data: [], error: 'AUTHENTICATION_FAILED', code: 1 });
           return;
         }
 
@@ -37,14 +37,14 @@ module.exports = function loginHandler(req, res) {
         const creds = await login.getPassDetailsForComparison(safeEmail);
 
         if (creds.length === 0) {
-          res.status(400).json({ data: [], error: 'AUTHENTICATION_FAILED' });
+          res.status(400).json({ data: [], error: 'AUTHENTICATION_FAILED', code: 2 });
           login.closeConnection();
           user.closeConnection();
           return;
         }
 
         if(!await verifyPassword(safePassword, creds[0].salt, creds[0].pass)) {
-          res.status(400).json({ data: [], error: 'AUTHENTICATION_FAILED' });
+          res.status(400).json({ data: [], error: 'AUTHENTICATION_FAILED', code: 3 });
           login.closeConnection();
           user.closeConnection();
           return;
@@ -69,7 +69,7 @@ module.exports = function loginHandler(req, res) {
 
       } catch (err) {
         logger.error(err);
-        res.status(400).json({ data: [], error: 'AUTHENTICATION_FAILED' });
+        res.status(400).json({ data: [], error: 'AUTHENTICATION_FAILED', code: 4 });
       }
     },
     get() {
