@@ -93,6 +93,7 @@ app.use('/profile/images', express.static(`${__dirname}/public/uploads`));
 app.use('/js', express.static(`${__dirname}/node_modules/bootstrap/dist/js`));
 app.use('/js', express.static(`${__dirname}/node_modules/@fortawesome/fontawesome-free/js`));
 
+app.use('/.well-known', express.static(path.join(__dirname, '.well-known')));
 app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
 // Routes
