@@ -2,7 +2,10 @@ const restful = require('../../helpers/restful');
 const { logger, invalidUseLogger } = require('../../logger');
 const LostPetsModel = require('../../data/models/lost-pets.model');
 const PetsModel = require('../../data/models/pets.model');
-const {deleteUploadedFiles} = require('../../utils/upload.functions');
+// const {deleteUploadedFiles} = require('../../utils/upload.functions');
+const {copyAndRenamePng} = require('../../utils/copyAndRename');
+const path = require('path');
+
 
 module.exports = function registerPetHandler(req, res) {
     restful(req, res, {
@@ -42,29 +45,34 @@ module.exports = function registerPetHandler(req, res) {
         },
         async post() {
             try {
-                const uploadedFiles = [req.file.filename];
-
+                // Save this for when uploading files again.
+                // const uploadedFiles = [req.file.filename];
                 const lostPets = new LostPetsModel();
                 const result = await lostPets.createLostPetEntry(req.body);
 
                 if (!result) {
                     logger.info('result', result);
-                    deleteUploadedFiles(uploadedFiles);
+                    // deleteUploadedFiles(uploadedFiles);
                     pets.closeConnection();
                     lostPets.closeConnection();
                     res.status(500).json({ data: [], error: 'REGISTER_PET_FAILED' });
-                    // throw new Error('REGISTER_PET_FAILED');
                 }
 
                 const pets = new PetsModel();
-                pets.setPetProfileImage(result.petId, uploadedFiles[0]);
+                // pets.setPetProfileImage(result.petId, uploadedFiles[0]);
+                console.log(path.join(__dirname, '..', '..', '..', 'public'));
+                const fileName = `silhouette_${req.body.petType}.png`;
+                const newFileName = copyAndRenamePng(path.join(__dirname, '..', '..', '..', 'public', fileName))
+                console.log('newFileName', newFileName);
+                pets.setPetProfileImage(result.petId, newFileName);
                 pets.closeConnection();
                 lostPets.closeConnection();
                 res.status(200).json({ data: result, error: '' });
                 logger.info('done');
             } catch (err) {
+                console.log('errors')
                 logger.error(err);
-                deleteUploadedFiles([req.file.filename]);
+                // deleteUploadedFiles([req.file.filename]);
                 res.status(500).json({ data: [], error: 'REGISTER_PET_FAILED' });
             }
         },

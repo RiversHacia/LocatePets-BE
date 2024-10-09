@@ -1,0 +1,4 @@
+TRUNCATE `doggyfinder`.`lost_and_found`;
+TRUNCATE `doggyfinder`.`pet_images`;
+TRUNCATE `doggyfinder`.`pets`;
+TRUNCATE `doggyfinder`.`pets_ownership`;

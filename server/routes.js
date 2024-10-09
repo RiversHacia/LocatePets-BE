@@ -17,13 +17,15 @@ const router = express.Router();
 // router.get('/api-docs', swaggerUi.setup(swaggerDocument));
 
 // api routes
-router.post('/api/register-pet', upload.single('petImage'), routes.registerpet);
+// router.post('/api/register-pet', upload.single('petImage'), routes.registerpet);
+router.post('/api/register-pet', routes.registerpet);
 router.use('/api/fpw', routes.forgotpw);
 router.use('/api/fpwv', routes.forgotverify);
 router.use('/api/login', routes.login);
 router.use('/api/logout', routes.logout);
 router.use('/api/lost-pet-profile', routes.lostpetprofile);
-router.use('/api/lost-pets', upload.single('petImage'),routes.lostpets);
+// router.use('/api/lost-pets', upload.single('petImage'),routes.lostpets);
+router.use('/api/lost-pets', routes.lostpets);
 router.use('/api/me/:userId', routes.me);
 router.use('/api/me/:userId/msg-count', routes.me);
 router.use('/api/message/:messageId/action', routes.message);
